@@ -82,11 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              const MySecondPage(title: "Second Page"),
+                              const MySecondPage(title: "Statistics"),
                         ),
                       );
                     },
-                    child: const Text("Go to Second Page"),
+                    child: const Text("View Statistics"),
                   ),
                 ),
             ],
@@ -112,6 +112,7 @@ class _MySecondPageState extends State<MySecondPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -120,24 +121,52 @@ class _MySecondPageState extends State<MySecondPage> {
       ),
       body: Column(
         children: [
-          const Expanded(child: SizedBox()),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                final number = index + 1;
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Number $number"),
+                      const Text("0 times"),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
 
           Padding(
             padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Back"),
-              ),
-            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Reset"),
+                  ),
+                ),
+              const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Back to Home"),
+                    ),
+                ),
+              ],
+            )
           ),
         ],
       ),
     );
   }
-
-
   }
 
-  
+        
