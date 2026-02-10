@@ -63,29 +63,38 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Padding(
           padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const MySecondPage(title: "Second Page"),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: const Text("Generate"),
+                ),
+              ),
+              const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const MySecondPage(title: "Second Page"),
+                        ),
+                      );
+                    },
+                    child: const Text("Go to Second Page"),
                   ),
-                );
-              },
-              child: const Text("Go to Second Page"),
-            ),
-          ),
+                ),
+            ],
+          )
+          
         ),
       ],
     ),
-    floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
