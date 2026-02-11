@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -31,11 +32,32 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  final Random _rng = Random();
+
+  int? _currentNumber;
+
+  final Map<int, int> _counts = {
+    for (int i = 1; i <= 9; i++) i: 0,
+  };
+  
+
+  void _generate() {
     setState(() {
-      _counter++;
+      final n = _rng.nextInt(9) + 1;
+
+      _currentNumber = n;
+
+      _counts[n] = (_counts[n] ?? 0) + 1;
     });
-  }
+}
+void _resetAll() {
+  setState(() {
+    for (int i = 1; i <= 9; i++) {
+      _counts[i] = 0;
+    }
+    _currentNumber = null;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
               mainAxisAlignment: .center,
               children: [
-                const Text('You have pushed the button this many times:'),
                 Text(
-                  '$_counter',
+                  _currentNumber == null ? "" : '$_currentNumber',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: 20),
@@ -68,8 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                  },
+                  onPressed: _generate,
                   child: const Text("Generate"),
                 ),
               ),
@@ -81,8 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const MySecondPage(title: "Statistics"),
+                          builder: (context) => MySecondPage(
+                            title: "Second Page",
+                            counts: _counts,
+                            onReset: _resetAll,
+                          ),
                         ),
                       );
                     },
@@ -100,9 +123,16 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class MySecondPage extends StatefulWidget {
-  const MySecondPage({super.key, required this.title});
+  const MySecondPage({
+    super.key, 
+    required this.title, 
+    required this.counts,
+    required this.onReset,
+    });
 
   final String title;
+  final Map<int, int> counts;
+  final VoidCallback onReset;
 
   @override
   State<MySecondPage> createState() => _MySecondPageState();
@@ -133,7 +163,7 @@ class _MySecondPageState extends State<MySecondPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Number $number"),
-                      const Text("0 times"),
+                      Text("${widget.counts[number]} times"),
                     ],
                   ),
                 );
@@ -148,7 +178,10 @@ class _MySecondPageState extends State<MySecondPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.onReset();
+                      setState(() {});
+                    },
                     child: const Text("Reset"),
                   ),
                 ),
