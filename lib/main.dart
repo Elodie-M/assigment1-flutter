@@ -108,7 +108,11 @@ void dispose() {
                   },
                   child: Text(
                     _currentNumber == null ? "" : '$_currentNumber',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: const TextStyle(
+                      fontSize: 64,          
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
