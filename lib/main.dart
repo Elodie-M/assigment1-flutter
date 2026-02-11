@@ -18,6 +18,17 @@ final ButtonStyle _elevatedButtonStyle = ElevatedButton.styleFrom(
   textStyle: const TextStyle(fontSize: 16),
 );
 
+const TextStyle kNumberTextStyle = TextStyle(
+  fontSize: 64,
+  fontWeight: FontWeight.bold,
+  color: kTextColor,
+);
+
+const TextStyle kStatsRowTextStyle = TextStyle(
+  fontSize: 16,
+  color: kTextColor,
+);
+
 void main() {
   runApp(const MyApp());
 }
@@ -30,6 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Random Number Generator'),
@@ -70,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     _controller.forward(from: 0); 
 
     _timer?.cancel();
-    _timer = Timer(const Duration(milliseconds: 500), () {
+    _timer = Timer(const Duration(seconds: 1), () {
       _controller.reset();
     });
 }
@@ -87,7 +99,7 @@ void initState() {
   super.initState();
   _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(seconds: 1),
   );
 }
 
@@ -125,11 +137,7 @@ void dispose() {
                   },
                   child: Text(
                     _currentNumber == null ? "" : '$_currentNumber',
-                    style: const TextStyle(
-                      fontSize: 64,          
-                      fontWeight: FontWeight.bold,
-                      color: kTextColor,
-                    ),
+                    style: kNumberTextStyle
                   ),
                 ),
                 SizedBox(height: 20),
@@ -223,9 +231,9 @@ class _MySecondPageState extends State<MySecondPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Number $number",
-                        style: const TextStyle(color: kTextColor),),
+                        style: kStatsRowTextStyle,),
                       Text("${widget.counts[number]} times",
-                        style: const TextStyle(color: kTextColor),),
+                        style: kStatsRowTextStyle,),
                     ],
                   ),
                 );
