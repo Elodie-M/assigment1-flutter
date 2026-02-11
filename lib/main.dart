@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -29,12 +30,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
   int _counter = 0;
 
   final Random _rng = Random();
 
   int? _currentNumber;
+
+  late final AnimationController _controller;
+  Timer? _timer;
 
   final Map<int, int> _counts = {
     for (int i = 1; i <= 9; i++) i: 0,
@@ -42,12 +46,18 @@ class _MyHomePageState extends State<MyHomePage> {
   
 
   void _generate() {
+    final n = _rng.nextInt(9) + 1;
+
     setState(() {
-      final n = _rng.nextInt(9) + 1;
-
       _currentNumber = n;
-
       _counts[n] = (_counts[n] ?? 0) + 1;
+    });
+
+    _controller.forward(from: 0); 
+
+    _timer?.cancel();
+    _timer = Timer(const Duration(milliseconds: 500), () {
+      _controller.reset();
     });
 }
 void _resetAll() {
@@ -57,6 +67,21 @@ void _resetAll() {
     }
     _currentNumber = null;
   });
+}
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 500),
+  );
+}
+
+@override
+void dispose() {
+  _timer?.cancel();
+  _controller.dispose();
+  super.dispose();
 }
 
   @override
@@ -73,9 +98,18 @@ void _resetAll() {
               child: Column(
               mainAxisAlignment: .center,
               children: [
-                Text(
-                  _currentNumber == null ? "" : '$_currentNumber',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _controller.value * 2 * pi, 
+                      child: child,
+                    );
+                  },
+                  child: Text(
+                    _currentNumber == null ? "" : '$_currentNumber',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
                 SizedBox(height: 20),
               ],
