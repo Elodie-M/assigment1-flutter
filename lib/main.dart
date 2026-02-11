@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 
+const Color kAppBarColor = Color(0xFF147CD3);
+const Color kBodyColor = Color(0xFF2196F3);
+const Color kButtonColor = Color(0xFF147CD3);
+const Color kTextColor = Colors.white;
+
+final ButtonStyle _elevatedButtonStyle = ElevatedButton.styleFrom(
+  backgroundColor: kButtonColor,
+  foregroundColor: kTextColor,
+  minimumSize: const Size(double.infinity, 48),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(2),
+  ),
+  elevation: 4,
+  textStyle: const TextStyle(fontSize: 16),
+);
+
 void main() {
   runApp(const MyApp());
 }
@@ -31,8 +47,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
-  int _counter = 0;
-
   final Random _rng = Random();
 
   int? _currentNumber;
@@ -87,7 +101,10 @@ void dispose() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBodyColor,
       appBar: AppBar(
+        backgroundColor: kAppBarColor,
+        foregroundColor: kTextColor,
         leading: const Icon(Icons.home),
         title: Text(widget.title),
       ),
@@ -111,7 +128,7 @@ void dispose() {
                     style: const TextStyle(
                       fontSize: 64,          
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: kTextColor,
                     ),
                   ),
                 ),
@@ -127,6 +144,7 @@ void dispose() {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
+                  style: _elevatedButtonStyle,
                   onPressed: _generate,
                   child: const Text("Generate"),
                 ),
@@ -135,6 +153,7 @@ void dispose() {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
+                    style: _elevatedButtonStyle,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -179,7 +198,10 @@ class _MySecondPageState extends State<MySecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBodyColor,
       appBar: AppBar(
+        backgroundColor: kAppBarColor,
+        foregroundColor: kTextColor,
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -200,8 +222,10 @@ class _MySecondPageState extends State<MySecondPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Number $number"),
-                      Text("${widget.counts[number]} times"),
+                      Text("Number $number",
+                        style: const TextStyle(color: kTextColor),),
+                      Text("${widget.counts[number]} times",
+                        style: const TextStyle(color: kTextColor),),
                     ],
                   ),
                 );
@@ -216,6 +240,7 @@ class _MySecondPageState extends State<MySecondPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
+                    style: _elevatedButtonStyle,
                     onPressed: () {
                       widget.onReset();
                       setState(() {});
@@ -227,6 +252,7 @@ class _MySecondPageState extends State<MySecondPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
+                    style: _elevatedButtonStyle,
                     onPressed: () => Navigator.pop(context),
                     child: const Text("Back to Home"),
                     ),
@@ -239,5 +265,4 @@ class _MySecondPageState extends State<MySecondPage> {
     );
   }
   }
-
-        
+ 
