@@ -74,23 +74,16 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void _generate() {
     final n = _rng.nextInt(9) + 1;
 
+    setState(() {
+      _currentNumber = n;
+      _counts[n] = (_counts[n] ?? 0) + 1;
+    });
+
     _controller.forward(from: 0); 
 
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(milliseconds: 80), (_) {
-    setState(() {
-      _currentNumber = _rng.nextInt(9) + 1;
-    });
-  });
-    Timer(const Duration(seconds: 1), () {
-      _timer?.cancel();
+    _timer = Timer(const Duration(seconds: 1), () {
       _controller.reset();
-    
-    final finalNumber = _rng.nextInt(9)+1;
-    setState(() {
-      _currentNumber = finalNumber;
-      _counts[finalNumber] = (_counts[finalNumber] ?? 0) + 1;
-    });
     });
 }
 void _resetAll() {
