@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     _controller.forward(from: 0); 
 
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(milliseconds: 80), (_) {
+    _timer = Timer.periodic(const Duration(milliseconds: 130), (_) {
     setState(() {
       _currentNumber = _rng.nextInt(9) + 1;
     });
